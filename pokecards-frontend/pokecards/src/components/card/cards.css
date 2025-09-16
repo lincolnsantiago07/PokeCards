@@ -1,59 +1,132 @@
 :root{
-  --card-radius: 16px;
-  --card-border: rgba(255,255,255,.14);
+  --card-radius: 18px;
   --card-surface: rgba(255,255,255,.06);
   --card-surface-2: rgba(255,255,255,.08);
-  --card-shadow: 0 8px 30px rgba(2, 8, 23, .45);
-  --card-shadow-hover: 0 12px 42px rgba(2,8,23,.55);
+  --card-border: rgba(255,255,255,.16);
   --card-text: #e5e7eb;
   --card-muted: #94a3b8;
+  --card-shadow: 0 10px 34px rgba(2, 8, 23, .45);
+  --card-shadow-hover: 0 18px 60px rgba(2,8,23,.58);
   --card-primary: #0ea5e9;
   --card-ratio: 5 / 7;
+
+  /* rarity color (overridden by [data-rarity] rules) */
+  --rarity: 56 189 248; /* default = teal */
 }
 
+/* Card with gradient border using multiple backgrounds */
 .card{
-  display:grid; grid-template-rows:auto 1fr auto;
-  background:var(--card-surface);
-  border:1px solid var(--card-border);
-  border-radius:var(--card-radius);
-  box-shadow:var(--card-shadow);
-  overflow:hidden;
-  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  border-radius: var(--card-radius);
+  background:
+    linear-gradient(var(--card-surface), var(--card-surface)) padding-box,
+    linear-gradient(135deg, rgba(255,255,255,.18), rgba(14,165,233,.25) 40%, rgba(255,255,255,.05)) border-box;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
 }
-.card:hover{ transform:translateY(-4px); box-shadow:var(--card-shadow-hover); border-color:rgba(255,255,255,.22) }
+.card:hover{
+  transform: translateY(-6px);
+  box-shadow: var(--card-shadow-hover);
+}
 
+/* subtle glow on hover in rarity color */
+.card::after{
+  content:"";
+  position:absolute; inset:-1px;
+  pointer-events:none; border-radius: inherit;
+  background: radial-gradient(400px 140px at 60% 0%, rgba(var(--rarity)/.25), transparent 70%);
+  opacity: 0; transition: opacity .25s ease;
+}
+.card:hover::after{ opacity: .9 }
+
+/* Media (card image) */
 .card__media{
-  position:relative; aspect-ratio:var(--card-ratio);
+  aspect-ratio: var(--card-ratio);
+  display: grid; place-items: center;
   background:
     radial-gradient(600px 260px at 30% 0%, rgba(255,255,255,.10), transparent 60%),
     linear-gradient(180deg, rgba(255,255,255,.04), transparent);
-  display:grid; place-items:center; padding:6px;
 }
 .card__media img{
-  width:100%; height:100%; object-fit:contain; display:block;
-  border-radius: calc(var(--card-radius) - 6px);
+  width: 100%; height: 100%;
+  transform: translateZ(0); /* better perf */ 
+  transition: transform .35s ease;
+}
+.card:hover .card__media img{ transform: scale(1.02) }
+
+/* holo "sheen" pass on hover */
+.card__media::after{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    linear-gradient(120deg, transparent 20%, rgba(255,255,255,.18) 35%, transparent 55%);
+  transform: translateX(-120%);
+  opacity: 0;
+}
+.card:hover .card__media::after{
+  opacity: 1;
+  animation: sheen 1.1s ease forwards;
+}
+@keyframes sheen{
+  to{ transform: translateX(120%) }
 }
 
-.card__body{ padding:12px 14px 4px; }
+/* Body */
+.card__body{ padding: 12px 14px 6px; }
 .card__title{
-  margin:0 0 6px; font-weight:800; letter-spacing:-.015em; color:var(--card-text);
-  font-size: clamp(1.05rem, 0.9rem + .6vw, 1.45rem); line-height:1.2;
-  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  margin: 0 0 8px; color: var(--card-text);
+  font-weight: 800; letter-spacing: -.015em;
+  font-size: clamp(1.05rem, 0.9rem + .6vw, 1.45rem); line-height: 1.2;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.card__row{ display:flex; align-items:center; gap:8px; }
+.card__row{ display:flex; align-items:center; gap:10px; }
 
+/* Chip */
 .chip{
-  display:inline-flex; align-items:center; gap:6px;
-  padding:6px 10px; font-weight:600; font-size:clamp(.85rem,.8rem + .2vw,.95rem);
-  color:var(--card-text); background:var(--card-surface-2);
-  border:1px solid var(--card-border); border-radius:999px; backdrop-filter:saturate(160%) blur(6px);
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 6px 10px;
+  font-weight: 600; font-size: clamp(.85rem,.8rem + .2vw,.95rem);
+  color: var(--card-text);
+  background: var(--card-surface-2);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  backdrop-filter: saturate(160%) blur(6px);
 }
-.chip--rarity::before{ content:"●"; font-size:.7em; opacity:.9; color:var(--card-primary) }
+.chip__dot{
+  width: .55em; height: .55em; border-radius: 999px;
+  background: radial-gradient(35% 35% at 30% 30%, #fff, rgba(255,255,255,.1)),
+              linear-gradient(45deg, rgb(var(--rarity)) 0%, rgba(var(--rarity)/.6) 100%);
+  box-shadow: 0 0 14px rgba(var(--rarity)/.7);
+}
 
+/* Footer / price */
 .card__footer{
   display:flex; align-items:baseline; justify-content:space-between; gap:10px;
-  padding:12px 14px 14px; border-top:1px solid rgba(255,255,255,.08);
-  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.05));
+  padding: 12px 14px 14px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.05));
 }
-.price__label{ color:var(--card-muted); font-weight:800; letter-spacing:.04em; text-transform:uppercase; }
-.price__amount{ font-weight:800; color:var(--card-text); font-size:clamp(1rem,.9rem + .5vw,1.25rem); }
+.price__label{
+  color: rgb(234, 250, 241);
+  font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+
+.price__amount{ font-weight: 800; color: rgb(49, 245, 92); font-size: clamp(1rem,.9rem + .5vw,1.25rem); }
+
+/* Map rarity → color via case-insensitive attribute selectors */
+.card[data-rarity*="promo" i]{   --rarity: 14 165 233; }  /* cyan  */
+.card[data-rarity*="common" i]{  --rarity: 148 163 184; } /* slate */
+.card[data-rarity*="uncommon" i]{--rarity: 34 197 94; }   /* green */
+.card[data-rarity*="rare" i]{    --rarity: 250 204 21; }  /* amber (covers Rare/Ultra Rare) */
+.card[data-rarity*="ultra" i]{   --rarity: 168 85 247; }  /* purple */
+.card[data-rarity*="holo" i]{    --rarity: 99 102 241; }  /* indigo */
+.card[data-rarity*="secret" i]{  --rarity: 244 63 94; }   /* rose */
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce){
+  .card, .card *{ transition: none !important; animation: none !important; }
+}
