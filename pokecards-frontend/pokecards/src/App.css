@@ -1,64 +1,129 @@
 :root{
+  --bg-1: #0b1220;
+  --bg-2: #0e1628;
+  --glow-1: 255 92 92;      
+  --glow-2: 14 165 233;     
   --surface: rgba(255,255,255,.06);
   --surface-2: rgba(255,255,255,.08);
   --border: rgba(255,255,255,.14);
   --text: #e5e7eb;
   --muted: #94a3b8;
   --primary: #0ea5e9;
-  --radius: 14px;
+  --radius: 5px;
   --shadow-1: 0 8px 30px rgba(2,8,23,.45);
   --shadow-2: 0 10px 40px rgba(2,8,23,.55);
   --fs-h1: clamp(2rem,1.2rem + 2.5vw,3.25rem);
   --fs-body: clamp(.95rem,.9rem + .3vw,1.05rem);
+  --grad: linear-gradient(120deg, #fff, #a3e3ff 55%, #f0f9ff);
 }
 
-/* reset mínimo */
 *{ box-sizing: border-box }
 html,body{ height: 100% }
 body{
+  margin:0;
   color: var(--text);
   font: 400 var(--fs-body)/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Inter,"Helvetica Neue",Arial;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(var(--glow-2)/.18), transparent 60%),
+    radial-gradient(1000px 600px at 100% 0%, rgba(var(--glow-1)/.16), transparent 55%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    background-attachment: fixed, fixed, fixed;
 }
 
-/* container centralizado */
+/* container */
 .page{
   width: min(1200px, 100%);
   margin-inline: auto;
   padding: 24px 20px 64px;
+  position: relative;
+}
+
+/* background blobs */
+.bg-decor{
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 0;
+}
+.bg-decor::before, .bg-decor::after{
+  content:""; position:absolute; filter: blur(60px); opacity:.4;
+  border-radius: 999px;
+}
+.bg-decor::before{
+  width: 420px; height: 420px; left: -120px; top: -80px;
+  background: radial-gradient(circle at 30% 30%, rgba(var(--glow-2)/.55), transparent 60%);
+}
+.bg-decor::after{
+  width: 360px; height: 360px; right: -100px; top: 60px;
+  background: radial-gradient(circle at 70% 40%, rgba(var(--glow-1)/.5), transparent 65%);
 }
 
 /* header */
-.page-header{ display:flex; justify-content:center; margin:10px 0 16px; }
+.page-header{ position:relative; z-index: 1; margin: 10px 0 16px; text-align:center; }
+.brand{
+  display:inline-flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 6px);
+  box-shadow: var(--shadow-1);
+  backdrop-filter: saturate(160%) blur(8px);
+}
+.brand .pokeball{
+  color: #ffffffcc;
+  transition: transform .35s ease;
+}
+.brand:hover .pokeball{ transform: rotate(-15deg) scale(1.05); }
+
 .page-header h1{
-  margin:0; font-size:var(--fs-h1); letter-spacing:-.02em; line-height:1.1;
-  background: linear-gradient(180deg,#fff,#cbd5e1 85%);
+  margin:0; letter-spacing:-.02em; line-height:1.1; font-size:var(--fs-h1);
+  background: var(--grad);
   -webkit-background-clip:text; background-clip:text; color:transparent;
   text-shadow:0 1px 0 rgba(255,255,255,.06);
 }
 
-/* toolbar (fixa/vidro) */
+.subtitle{
+  margin:10px auto 0; color: var(--muted);
+  max-width: 680px;
+}
+
+/* toolbar*/
 .toolbar{
   position: sticky; top: 10px; z-index: 5;
-  display: flex; gap: 12px; justify-content: flex-end; align-items: center;
-  padding: 8px 10px; margin: 8px 0 18px;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 10px 12px; margin: 14px 0 20px;
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); box-shadow: var(--shadow-1);
   backdrop-filter: saturate(160%) blur(8px);
 }
+.toolbar-left, .toolbar-right{ display:flex; align-items:center; gap:10px; }
 
-/* GRID responsiva */
+/* GRID */
 .grid{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: clamp(14px, 2.4vw, 22px);
   align-items: start;
+  position: relative; z-index: 1;
+}
+.grid.is-dimmed{ opacity:.6; filter:saturate(.8); }
+
+/* states */
+.status{
+  color: var(--muted); text-align: center; margin: 16px 0 18px;
+}
+.status.error{ color:#fecaca }
+.dot-bounce{
+  display:inline-block; width:.6em; height:.6em; background:#7dd3fc; border-radius:999px;
+  margin-right:8px; vertical-align:middle; animation: bounce .9s infinite ease-in-out alternate;
+}
+@keyframes bounce { from{ transform: translateY(0) } to{ transform: translateY(-5px) } }
+
+/* responsive */
+@media (max-width:640px){
+  .toolbar{ position: static; padding: 8px 10px }
+  .grid{ grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) }
 }
 
-/* estados */
-.page p{ color: var(--muted); text-align: center; margin: 24px 0; }
-
-/* responsivo */
-@media (max-width:640px){
-  .toolbar{ position: static; padding: 6px 8px }
-  .grid{ grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) }
+@media (prefers-reduced-motion: reduce){
+  .brand:hover .pokeball{ transform:none }
+  .dot-bounce{ animation: none }
 }
