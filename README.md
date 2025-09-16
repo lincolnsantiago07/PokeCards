@@ -5,8 +5,10 @@ Frontend is **Vite + React + TypeScript**; backend is **Spring Boot with JPA & L
 
 > **Preview**
 >
-> <img width="1847" height="916" alt="image" src="https://github.com/user-attachments/assets/ccd9d018-dbb5-44ab-82f1-109b5acecc88" />
-> <img width="1845" height="915" alt="image" src="https://github.com/user-attachments/assets/bfa8b668-b40c-42a1-aa42-1f5b0e9b5e92" />
+<img width="1847" height="916" alt="image" src="https://github.com/user-attachments/assets/ccd9d018-dbb5-44ab-82f1-109b5acecc88" />
+<br>
+<br>
+<img width="1845" height="915" alt="image" src="https://github.com/user-attachments/assets/bfa8b668-b40c-42a1-aa42-1f5b0e9b5e92" />
 
 ---
 
