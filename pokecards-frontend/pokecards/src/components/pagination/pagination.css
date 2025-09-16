@@ -1,0 +1,9 @@
+.pager__wrap { display:flex; flex-direction:column; align-items:center; gap:8px; margin:16px 0; }
+.pager__summary { color:#94a3b8; font-size:14px; }
+.pager { display:flex; align-items:center; gap:8px; justify-content:center; }
+.pager__btn { padding:6px 10px; border:1px solid #e5e7eb33; border-radius:8px; background:#ffffff0d; color:#e5e7eb; cursor:pointer; }
+.pager__btn:disabled { opacity:.4; cursor:not-allowed; }
+.pager__list { display:flex; gap:6px; list-style:none; padding:0; margin:0 6px; }
+.pager__num { min-width:36px; padding:6px 10px; border:1px solid #e5e7eb33; border-radius:8px; background:#ffffff0d; color:#e5e7eb; cursor:pointer; }
+.pager__num.is-active { background:#0ea5e9; color:#fff; border-color:transparent; }
+.pager__gap { display:flex; align-items:center; color:#9ca3af; padding:0 4px; }

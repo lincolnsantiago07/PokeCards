@@ -1,0 +1,48 @@
+/* src/components/search/search.css */
+.search{
+  position: relative;
+  display: flex;             /* antes: inline-flex */
+  align-items: center;
+  min-width: 260px;
+  width: 100%;               /* ocupa toda a faixa disponível */
+  flex: 1;                   /* cresce no flex container (toolbar) */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 14px 8px 36px;
+  color: var(--text);
+  box-shadow: var(--shadow-1);
+  backdrop-filter: saturate(160%) blur(8px);
+}
+
+.search:focus-within{
+  border-color: rgba(59,130,246,.6);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.25), var(--shadow-1);
+}
+
+.search__icon{
+  position: absolute; left: 12px; color: #9ca3af; pointer-events: none;
+}
+
+.search__input{
+  width: 100%;
+  border: 0; outline: none; background: transparent; color: inherit;
+  font: inherit;
+}
+
+/* dropdown de sugestões — permanece igual */
+.search__list{
+  position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+  background: #0f172a;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-2);
+  margin: 0; padding: 6px; list-style: none; z-index: 50;
+  max-height: 300px; overflow-y: auto;
+}
+.search__option{
+  width: 100%; text-align: left;
+  padding: 10px 12px; border-radius: 8px; border: 0;
+  background: transparent; color: var(--text); cursor: pointer; font: inherit;
+}
+.search__option:hover, .search__option.is-active{ background: rgba(255,255,255,.06); }
