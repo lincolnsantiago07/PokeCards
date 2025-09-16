@@ -10,7 +10,7 @@ export default function App() {
   const [sorts, setSorts] = useState<SortSpec[]>([{ field: "name", direction: "asc" }]);
   const [page, setPage] = useState(0);
   const [q, setQ] = useState("");
-  const size = 250;
+  const size = 50;
 
   useEffect(() => { setPage(0); }, [sorts, q]);
 

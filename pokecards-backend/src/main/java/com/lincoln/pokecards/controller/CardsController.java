@@ -31,7 +31,7 @@ public class CardsController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping
     public Page<CardsResponseDTO> getAll(
-            @PageableDefault(size = 250, sort = "name", direction = Sort.Direction.ASC)
+            @PageableDefault(size = 50, sort = "name", direction = Sort.Direction.ASC)
             Pageable pageable
     ) {
         validateSort(pageable);
@@ -42,7 +42,7 @@ public class CardsController {
     @GetMapping("/search")
     public Page<CardsResponseDTO> search(
             @RequestParam(name = "q", required = false) String q,
-            @PageableDefault(size = 250, sort = "name", direction = Sort.Direction.ASC)
+            @PageableDefault(size = 50, sort = "name", direction = Sort.Direction.ASC)
             Pageable pageable
     ) {
         validateSort(pageable);
@@ -51,6 +51,9 @@ public class CardsController {
                 : repository.searchByQuery(q, pageable);
         return page.map(CardsResponseDTO::new);
     }
+
+    /*
+    Possible implementation
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/suggest")
@@ -61,6 +64,7 @@ public class CardsController {
         return repository.suggestNames(q, PageRequest.of(0, limit))
                 .stream().map(Cards::getName).distinct().toList();
     }
+     */
 
     private void validateSort(Pageable pageable) {
         boolean ok = pageable.getSort().stream()
