@@ -16,12 +16,12 @@ public class Cards {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private String name;
-    private String image_large;
+    private String Image_large;
     private Double price;
     private String rarity;
 
     public Cards(CardsRequestDTO data){
-        this.image_large = data.image_large();
+        this.Image_large = data.Image_large();
         this.price = data.price();
         this.rarity = data.rarity();
         this.name = data.name();
