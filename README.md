@@ -37,3 +37,7 @@ Frontend is **Vite + React + TypeScript**; backend is **Spring Boot with JPA & L
 - **JPA** — for managing relational data in applications and map Java objects (entities) to database tables and provides an API for performing CRUD
 - **Lombok** — library that integrates seamlessly with Spring Boot to significantly reduce boilerplate code
 - **Postgresql** — an object-relational database management system, which means that it has relational capabilities and an object-oriented design
+
+### Disclaimer
+
+- Some cards are drawn and set to $0; this is due to the API where the cards are made available. An implementation to correct this could be useful.
